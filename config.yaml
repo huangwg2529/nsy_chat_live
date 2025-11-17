@@ -3,3 +3,10 @@ proxy:
   port: 7890
 refresh_token: ""
 ffmpeg_path: ""  # C:/ffmpeg/bin/ffmpeg.exe
+media_path_win: ""
+media_path_linux: ""
+email:
+  smtp_host: "smtp.qq.com"
+  sender: "xxxx@qq.com"
+  auth_code: ""
+  receiver: "xxx@163.com"

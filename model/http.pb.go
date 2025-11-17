@@ -7,12 +7,11 @@
 package model
 
 import (
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
-
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -21,6 +20,58 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+type ChatMessageType int32
+
+const (
+	ChatMessageType_Unknown ChatMessageType = 0
+	ChatMessageType_Text    ChatMessageType = 1
+	ChatMessageType_Image   ChatMessageType = 2
+	ChatMessageType_Video   ChatMessageType = 3
+)
+
+// Enum value maps for ChatMessageType.
+var (
+	ChatMessageType_name = map[int32]string{
+		0: "Unknown",
+		1: "Text",
+		2: "Image",
+		3: "Video",
+	}
+	ChatMessageType_value = map[string]int32{
+		"Unknown": 0,
+		"Text":    1,
+		"Image":   2,
+		"Video":   3,
+	}
+)
+
+func (x ChatMessageType) Enum() *ChatMessageType {
+	p := new(ChatMessageType)
+	*p = x
+	return p
+}
+
+func (x ChatMessageType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ChatMessageType) Descriptor() protoreflect.EnumDescriptor {
+	return file_model_http_proto_enumTypes[0].Descriptor()
+}
+
+func (ChatMessageType) Type() protoreflect.EnumType {
+	return &file_model_http_proto_enumTypes[0]
+}
+
+func (x ChatMessageType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ChatMessageType.Descriptor instead.
+func (ChatMessageType) EnumDescriptor() ([]byte, []int) {
+	return file_model_http_proto_rawDescGZIP(), []int{0}
+}
 
 type RefreshAccessTokenRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -68,8 +119,8 @@ func (x *RefreshAccessTokenRequest) GetRefreshToken() string {
 
 type RefreshAccessTokenResponse struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
-	AccessToken           string     `protobuf:"bytes,1,opt,name=accessToken,proto3" json:"accessToken,omitempty"`
-	AccessTokenExpireTime *Timestamp `protobuf:"bytes,2,opt,name=accessTokenExpireTime,proto3" json:"accessTokenExpireTime,omitempty"`
+	AccessToken           string                 `protobuf:"bytes,1,opt,name=accessToken,proto3" json:"accessToken,omitempty"`
+	AccessTokenExpireTime *Timestamp             `protobuf:"bytes,2,opt,name=accessTokenExpireTime,proto3" json:"accessTokenExpireTime,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -398,14 +449,14 @@ type ListChatMessages struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	ChatRoomId    string                 `protobuf:"bytes,2,opt,name=chat_room_id,json=chatRoomId,proto3" json:"chat_room_id,omitempty"`
-	ChatMessageId string       `protobuf:"bytes,3,opt,name=chat_message_id,json=chatMessageId,proto3" json:"chat_message_id,omitempty"`
-	UserProfile   *UserProfile `protobuf:"bytes,4,opt,name=user_profile,json=userProfile,proto3" json:"user_profile,omitempty"`
-	Type          int32        `protobuf:"varint,5,opt,name=type,proto3" json:"type,omitempty"`
+	ChatMessageId string                 `protobuf:"bytes,3,opt,name=chat_message_id,json=chatMessageId,proto3" json:"chat_message_id,omitempty"`
+	UserProfile   *UserProfile           `protobuf:"bytes,4,opt,name=user_profile,json=userProfile,proto3" json:"user_profile,omitempty"`
+	Type          int32                  `protobuf:"varint,5,opt,name=type,proto3" json:"type,omitempty"`
 	Content       string                 `protobuf:"bytes,6,opt,name=content,proto3" json:"content,omitempty"`
 	ImageUrl      string                 `protobuf:"bytes,7,opt,name=image_url,json=imageUrl,proto3" json:"image_url,omitempty"`
-	VideoUrl      string       `protobuf:"bytes,8,opt,name=video_url,json=videoUrl,proto3" json:"video_url,omitempty"`
-	Timestamp     *Timestamp   `protobuf:"bytes,100,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
-	TimeStr       string       `protobuf:"bytes,200,opt,name=time_str,json=timeStr,proto3" json:"time_str,omitempty"`
+	VideoUrl      string                 `protobuf:"bytes,8,opt,name=video_url,json=videoUrl,proto3" json:"video_url,omitempty"`
+	Timestamp     *Timestamp             `protobuf:"bytes,100,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	TimeStr       string                 `protobuf:"bytes,200,opt,name=time_str,json=timeStr,proto3" json:"time_str,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -721,9 +772,9 @@ func (*CheckStreamLiveRequest) Descriptor() ([]byte, []int) {
 type CheckStreamLiveResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Field1        int32                  `protobuf:"varint,1,opt,name=field1,proto3" json:"field1,omitempty"`
-	Field2        int32         `protobuf:"varint,2,opt,name=field2,proto3" json:"field2,omitempty"`
-	LiveInfo      []*LiveStream `protobuf:"bytes,3,rep,name=live_info,json=liveInfo,proto3" json:"live_info,omitempty"`
-	UserProfile   []*LiveUser   `protobuf:"bytes,4,rep,name=user_profile,json=userProfile,proto3" json:"user_profile,omitempty"`
+	Field2        int32                  `protobuf:"varint,2,opt,name=field2,proto3" json:"field2,omitempty"`
+	LiveInfo      []*LiveStream          `protobuf:"bytes,3,rep,name=live_info,json=liveInfo,proto3" json:"live_info,omitempty"`
+	UserProfile   []*LiveUser            `protobuf:"bytes,4,rep,name=user_profile,json=userProfile,proto3" json:"user_profile,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -864,8 +915,8 @@ func (x *LiveStream) GetWebrtcUrl() string {
 
 type LiveUser struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string       `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Info          *UserProfile `protobuf:"bytes,2,opt,name=info,proto3" json:"info,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Info          *UserProfile           `protobuf:"bytes,2,opt,name=info,proto3" json:"info,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -985,7 +1036,12 @@ const file_model_http_proto_rawDesc = "" +
 	"webrtc_url\x18\r \x01(\tR\twebrtcUrl\"B\n" +
 	"\bLiveUser\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12&\n" +
-	"\x04info\x18\x02 \x01(\v2\x12.model.UserProfileR\x04infoB\tZ\a./modelb\x06proto3"
+	"\x04info\x18\x02 \x01(\v2\x12.model.UserProfileR\x04info*>\n" +
+	"\x0fChatMessageType\x12\v\n" +
+	"\aUnknown\x10\x00\x12\b\n" +
+	"\x04Text\x10\x01\x12\t\n" +
+	"\x05Image\x10\x02\x12\t\n" +
+	"\x05Video\x10\x03B\tZ\a./modelb\x06proto3"
 
 var (
 	file_model_http_proto_rawDescOnce sync.Once
@@ -999,34 +1055,36 @@ func file_model_http_proto_rawDescGZIP() []byte {
 	return file_model_http_proto_rawDescData
 }
 
+var file_model_http_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_model_http_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_model_http_proto_goTypes = []any{
-	(*RefreshAccessTokenRequest)(nil),  // 0: model.RefreshAccessTokenRequest
-	(*RefreshAccessTokenResponse)(nil), // 1: model.RefreshAccessTokenResponse
-	(*Timestamp)(nil),                  // 2: model.Timestamp
-	(*ListChatRoomsRequest)(nil),       // 3: model.ListChatRoomsRequest
-	(*ChatRoom)(nil),                   // 4: model.ChatRoom
-	(*ListChatRoomsResponse)(nil),      // 5: model.ListChatRoomsResponse
-	(*ListChatMessagesRequest)(nil),    // 6: model.ListChatMessagesRequest
-	(*ListChatMessages)(nil),           // 7: model.ListChatMessages
-	(*UserProfile)(nil),                // 8: model.UserProfile
-	(*ListChatMessagesResponse)(nil),   // 9: model.ListChatMessagesResponse
-	(*GetChatRoomRequest)(nil),         // 10: model.GetChatRoomRequest
-	(*CheckStreamLiveRequest)(nil),     // 11: model.CheckStreamLiveRequest
-	(*CheckStreamLiveResponse)(nil),    // 12: model.CheckStreamLiveResponse
-	(*LiveStream)(nil),                 // 13: model.LiveStream
-	(*LiveUser)(nil),                   // 14: model.LiveUser
+	(ChatMessageType)(0),               // 0: model.ChatMessageType
+	(*RefreshAccessTokenRequest)(nil),  // 1: model.RefreshAccessTokenRequest
+	(*RefreshAccessTokenResponse)(nil), // 2: model.RefreshAccessTokenResponse
+	(*Timestamp)(nil),                  // 3: model.Timestamp
+	(*ListChatRoomsRequest)(nil),       // 4: model.ListChatRoomsRequest
+	(*ChatRoom)(nil),                   // 5: model.ChatRoom
+	(*ListChatRoomsResponse)(nil),      // 6: model.ListChatRoomsResponse
+	(*ListChatMessagesRequest)(nil),    // 7: model.ListChatMessagesRequest
+	(*ListChatMessages)(nil),           // 8: model.ListChatMessages
+	(*UserProfile)(nil),                // 9: model.UserProfile
+	(*ListChatMessagesResponse)(nil),   // 10: model.ListChatMessagesResponse
+	(*GetChatRoomRequest)(nil),         // 11: model.GetChatRoomRequest
+	(*CheckStreamLiveRequest)(nil),     // 12: model.CheckStreamLiveRequest
+	(*CheckStreamLiveResponse)(nil),    // 13: model.CheckStreamLiveResponse
+	(*LiveStream)(nil),                 // 14: model.LiveStream
+	(*LiveUser)(nil),                   // 15: model.LiveUser
 }
 var file_model_http_proto_depIdxs = []int32{
-	2,  // 0: model.RefreshAccessTokenResponse.accessTokenExpireTime:type_name -> model.Timestamp
-	8,  // 1: model.ChatRoom.user_profile:type_name -> model.UserProfile
-	4,  // 2: model.ListChatRoomsResponse.chat_rooms:type_name -> model.ChatRoom
-	8,  // 3: model.ListChatMessages.user_profile:type_name -> model.UserProfile
-	2,  // 4: model.ListChatMessages.timestamp:type_name -> model.Timestamp
-	7,  // 5: model.ListChatMessagesResponse.messages:type_name -> model.ListChatMessages
-	13, // 6: model.CheckStreamLiveResponse.live_info:type_name -> model.LiveStream
-	14, // 7: model.CheckStreamLiveResponse.user_profile:type_name -> model.LiveUser
-	8,  // 8: model.LiveUser.info:type_name -> model.UserProfile
+	3,  // 0: model.RefreshAccessTokenResponse.accessTokenExpireTime:type_name -> model.Timestamp
+	9,  // 1: model.ChatRoom.user_profile:type_name -> model.UserProfile
+	5,  // 2: model.ListChatRoomsResponse.chat_rooms:type_name -> model.ChatRoom
+	9,  // 3: model.ListChatMessages.user_profile:type_name -> model.UserProfile
+	3,  // 4: model.ListChatMessages.timestamp:type_name -> model.Timestamp
+	8,  // 5: model.ListChatMessagesResponse.messages:type_name -> model.ListChatMessages
+	14, // 6: model.CheckStreamLiveResponse.live_info:type_name -> model.LiveStream
+	15, // 7: model.CheckStreamLiveResponse.user_profile:type_name -> model.LiveUser
+	9,  // 8: model.LiveUser.info:type_name -> model.UserProfile
 	9,  // [9:9] is the sub-list for method output_type
 	9,  // [9:9] is the sub-list for method input_type
 	9,  // [9:9] is the sub-list for extension type_name
@@ -1044,13 +1102,14 @@ func file_model_http_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_model_http_proto_rawDesc), len(file_model_http_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_model_http_proto_goTypes,
 		DependencyIndexes: file_model_http_proto_depIdxs,
+		EnumInfos:         file_model_http_proto_enumTypes,
 		MessageInfos:      file_model_http_proto_msgTypes,
 	}.Build()
 	File_model_http_proto = out.File
