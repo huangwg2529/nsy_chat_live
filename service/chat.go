@@ -155,50 +155,57 @@ func saveMessage(messages []*model.ListChatMessages) error {
 		return messages[i].Timestamp.Seconds < messages[j].Timestamp.Seconds
 	})
 
-	db := dal.DB()
 	dbMsgList := make([]*dal.ChatMessage, 0)
-	for _, msg := range messages {
-		dbMsg := &dal.ChatMessage{
-			UserId:        msg.UserId,
-			DisplayName:   msg.UserProfile.DisplayName,
-			ChatRoomId:    msg.ChatRoomId,
-			ChatMessageId: msg.ChatMessageId,
-			MsgType:       msg.Type,
-			Content:       msg.Content,
-			ImageUrl:      msg.ImageUrl,
-			VideoUrl:      msg.VideoUrl,
-			TimeStr:       msg.TimeStr,
-			SendTime:      msg.Timestamp.Seconds,
-		}
-		dbMsgList = append(dbMsgList, dbMsg)
-		switch msg.Type {
-		case int32(model.ChatMessageType_Text):
-			// do nothing
-		case int32(model.ChatMessageType_Image):
-			hlog.Infof("DownloadImage, imageUrl: %v, time: %v, path: %v, msgId: %v", msg.ImageUrl, time.Unix(msg.Timestamp.Seconds, 0), getMediaPath(msg.UserProfile.DisplayName), msg.ChatMessageId)
-			imgPath, err := DownloadImage(msg.ImageUrl, time.Unix(msg.Timestamp.Seconds, 0), getMediaPath(msg.UserProfile.DisplayName), msg.ChatMessageId)
-			if err != nil {
-				hlog.Errorf("Failed to download image: %v", err)
+	err := func() error {
+		db := dal.DB()
+		defer dal.ReleaseDB()
+		for _, msg := range messages {
+			dbMsg := &dal.ChatMessage{
+				UserId:        msg.UserId,
+				DisplayName:   msg.UserProfile.DisplayName,
+				ChatRoomId:    msg.ChatRoomId,
+				ChatMessageId: msg.ChatMessageId,
+				MsgType:       msg.Type,
+				Content:       msg.Content,
+				ImageUrl:      msg.ImageUrl,
+				VideoUrl:      msg.VideoUrl,
+				TimeStr:       msg.TimeStr,
+				SendTime:      msg.Timestamp.Seconds,
+			}
+			dbMsgList = append(dbMsgList, dbMsg)
+			switch msg.Type {
+			case int32(model.ChatMessageType_Text):
+				// do nothing
+			case int32(model.ChatMessageType_Image):
+				hlog.Infof("DownloadImage, imageUrl: %v, time: %v, path: %v, msgId: %v", msg.ImageUrl, time.Unix(msg.Timestamp.Seconds, 0), getMediaPath(msg.UserProfile.DisplayName), msg.ChatMessageId)
+				imgPath, err := DownloadImage(msg.ImageUrl, time.Unix(msg.Timestamp.Seconds, 0), getMediaPath(msg.UserProfile.DisplayName), msg.ChatMessageId)
+				if err != nil {
+					hlog.Errorf("Failed to download image: %v", err)
+					return err
+				}
+				dbMsg.ImagePath = imgPath
+			case int32(model.ChatMessageType_Video):
+				hlog.Infof("DownloadVideo, videoUrl: %v, time: %v, path: %v, msgId: %v", msg.VideoUrl, time.Unix(msg.Timestamp.Seconds, 0), getMediaPath(msg.UserProfile.DisplayName), msg.ChatMessageId)
+				videoPath, err := DownloadVideo(msg.VideoUrl, time.Unix(msg.Timestamp.Seconds, 0), getMediaPath(msg.UserProfile.DisplayName), msg.ChatMessageId)
+				if err != nil {
+					hlog.Errorf("Failed to download video: %v", err)
+					return err
+				}
+				dbMsg.VideoPath = videoPath
+			default:
+				hlog.Warnf("Unknown chat message type: %v, msgId: %v", msg.Type, msg.ChatMessageId)
+			}
+			if err := db.Create(dbMsg).Error; err != nil {
+				hlog.Errorf("Failed to save chat message: %v", err)
 				return err
 			}
-			dbMsg.ImagePath = imgPath
-		case int32(model.ChatMessageType_Video):
-			hlog.Infof("DownloadVideo, videoUrl: %v, time: %v, path: %v, msgId: %v", msg.VideoUrl, time.Unix(msg.Timestamp.Seconds, 0), getMediaPath(msg.UserProfile.DisplayName), msg.ChatMessageId)
-			videoPath, err := DownloadVideo(msg.VideoUrl, time.Unix(msg.Timestamp.Seconds, 0), getMediaPath(msg.UserProfile.DisplayName), msg.ChatMessageId)
-			if err != nil {
-				hlog.Errorf("Failed to download video: %v", err)
-				return err
-			}
-			dbMsg.VideoPath = videoPath
-		default:
-			hlog.Warnf("Unknown chat message type: %v, msgId: %v", msg.Type, msg.ChatMessageId)
 		}
-		if err := db.Create(dbMsg).Error; err != nil {
-			hlog.Errorf("Failed to save chat message: %v", err)
-			return err
-		}
+		return nil
+	}()
+	if err != nil {
+		return err
 	}
-	dal.ReleaseDB()
+
 	for _, msg := range dbMsgList {
 		sendChatEmail(msg)
 	}
