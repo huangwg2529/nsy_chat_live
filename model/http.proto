@@ -39,6 +39,13 @@ message ListChatMessagesRequest {
   bool backward = 5;
 }
 
+enum ChatMessageType {
+  Unknown = 0;
+  Text = 1;
+  Image = 2;
+  Video = 3;
+}
+
 message ListChatMessages {
   string user_id = 1;
   string chat_room_id = 2;
@@ -109,4 +116,54 @@ message LiveStream {
 message LiveUser {
   string id = 1;
   UserProfile info = 2;
+}
+
+enum IdProvider {
+  ID_PROVIDER_UNSPECIFIED = 0;
+  ID_PROVIDER_PHONE_NUMBER = 1;
+  ID_PROVIDER_APPLE = 2;
+  ID_PROVIDER_LINE = 3;
+  ID_PROVIDER_TWITTER = 4;
+  ID_PROVIDER_GOOGLE = 5;
+  ID_PROVIDER_FACEBOOK = 6;
+}
+
+message GetSNSLoginURLRequest {
+  IdProvider id_provider = 1;
+  string state = 2;
+  string code_challenge = 3;
+}
+
+message GetSNSLoginURLResponse {
+  string login_url = 1;
+}
+
+message UserAuthBySNSRequest {
+  IdProvider id_provider = 1;
+  string oauth_token = 2;
+  string oauth_verifier = 3;
+  string code_verifier = 4;
+  string id_token = 5;
+  string raw_nonce = 6;
+  string access_token = 7;
+}
+
+message UserPrivate {
+  string user_id = 1;
+  string unique_id = 2;
+  string display_name = 3;
+  string profile_image_url = 4;
+  reserved 5 to 21, 31 to 39, 41 to 43, 45 to 54;
+  string profile_background_image_url = 40;
+  string sm_profile_image_url = 44;
+}
+
+message UserAuthBySNSResponse {
+  bool need_signup = 1;
+  string signup_token = 2;
+  UserPrivate user = 3;
+  string access_token = 4;
+  string refresh_token = 5;
+  Timestamp access_token_expire_time = 6;
+  bool is_unretirable = 7;
 }

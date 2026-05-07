@@ -1,4 +1,13 @@
+.idea
+chat.exe
+chat
+*.db
+*.log
+*.json
 *.exe
+replive
+main
 *.mp4
-*.txt
-.idea/
+*.jpeg
+*.jpg
+*.png
