@@ -2,17 +2,16 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v4.25.3
-// source: model/http.proto
+// source: http.proto
 
 package model
 
 import (
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
-
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -21,6 +20,119 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+type ChatMessageType int32
+
+const (
+	ChatMessageType_Unknown ChatMessageType = 0
+	ChatMessageType_Text    ChatMessageType = 1
+	ChatMessageType_Image   ChatMessageType = 2
+	ChatMessageType_Video   ChatMessageType = 3
+)
+
+// Enum value maps for ChatMessageType.
+var (
+	ChatMessageType_name = map[int32]string{
+		0: "Unknown",
+		1: "Text",
+		2: "Image",
+		3: "Video",
+	}
+	ChatMessageType_value = map[string]int32{
+		"Unknown": 0,
+		"Text":    1,
+		"Image":   2,
+		"Video":   3,
+	}
+)
+
+func (x ChatMessageType) Enum() *ChatMessageType {
+	p := new(ChatMessageType)
+	*p = x
+	return p
+}
+
+func (x ChatMessageType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ChatMessageType) Descriptor() protoreflect.EnumDescriptor {
+	return file_http_proto_enumTypes[0].Descriptor()
+}
+
+func (ChatMessageType) Type() protoreflect.EnumType {
+	return &file_http_proto_enumTypes[0]
+}
+
+func (x ChatMessageType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ChatMessageType.Descriptor instead.
+func (ChatMessageType) EnumDescriptor() ([]byte, []int) {
+	return file_http_proto_rawDescGZIP(), []int{0}
+}
+
+type IdProvider int32
+
+const (
+	IdProvider_ID_PROVIDER_UNSPECIFIED  IdProvider = 0
+	IdProvider_ID_PROVIDER_PHONE_NUMBER IdProvider = 1
+	IdProvider_ID_PROVIDER_APPLE        IdProvider = 2
+	IdProvider_ID_PROVIDER_LINE         IdProvider = 3
+	IdProvider_ID_PROVIDER_TWITTER      IdProvider = 4
+	IdProvider_ID_PROVIDER_GOOGLE       IdProvider = 5
+	IdProvider_ID_PROVIDER_FACEBOOK     IdProvider = 6
+)
+
+// Enum value maps for IdProvider.
+var (
+	IdProvider_name = map[int32]string{
+		0: "ID_PROVIDER_UNSPECIFIED",
+		1: "ID_PROVIDER_PHONE_NUMBER",
+		2: "ID_PROVIDER_APPLE",
+		3: "ID_PROVIDER_LINE",
+		4: "ID_PROVIDER_TWITTER",
+		5: "ID_PROVIDER_GOOGLE",
+		6: "ID_PROVIDER_FACEBOOK",
+	}
+	IdProvider_value = map[string]int32{
+		"ID_PROVIDER_UNSPECIFIED":  0,
+		"ID_PROVIDER_PHONE_NUMBER": 1,
+		"ID_PROVIDER_APPLE":        2,
+		"ID_PROVIDER_LINE":         3,
+		"ID_PROVIDER_TWITTER":      4,
+		"ID_PROVIDER_GOOGLE":       5,
+		"ID_PROVIDER_FACEBOOK":     6,
+	}
+)
+
+func (x IdProvider) Enum() *IdProvider {
+	p := new(IdProvider)
+	*p = x
+	return p
+}
+
+func (x IdProvider) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (IdProvider) Descriptor() protoreflect.EnumDescriptor {
+	return file_http_proto_enumTypes[1].Descriptor()
+}
+
+func (IdProvider) Type() protoreflect.EnumType {
+	return &file_http_proto_enumTypes[1]
+}
+
+func (x IdProvider) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use IdProvider.Descriptor instead.
+func (IdProvider) EnumDescriptor() ([]byte, []int) {
+	return file_http_proto_rawDescGZIP(), []int{1}
+}
 
 type RefreshAccessTokenRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -31,7 +143,7 @@ type RefreshAccessTokenRequest struct {
 
 func (x *RefreshAccessTokenRequest) Reset() {
 	*x = RefreshAccessTokenRequest{}
-	mi := &file_model_http_proto_msgTypes[0]
+	mi := &file_http_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +155,7 @@ func (x *RefreshAccessTokenRequest) String() string {
 func (*RefreshAccessTokenRequest) ProtoMessage() {}
 
 func (x *RefreshAccessTokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[0]
+	mi := &file_http_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +168,7 @@ func (x *RefreshAccessTokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RefreshAccessTokenRequest.ProtoReflect.Descriptor instead.
 func (*RefreshAccessTokenRequest) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{0}
+	return file_http_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *RefreshAccessTokenRequest) GetRefreshToken() string {
@@ -68,15 +180,15 @@ func (x *RefreshAccessTokenRequest) GetRefreshToken() string {
 
 type RefreshAccessTokenResponse struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
-	AccessToken           string     `protobuf:"bytes,1,opt,name=accessToken,proto3" json:"accessToken,omitempty"`
-	AccessTokenExpireTime *Timestamp `protobuf:"bytes,2,opt,name=accessTokenExpireTime,proto3" json:"accessTokenExpireTime,omitempty"`
+	AccessToken           string                 `protobuf:"bytes,1,opt,name=accessToken,proto3" json:"accessToken,omitempty"`
+	AccessTokenExpireTime *Timestamp             `protobuf:"bytes,2,opt,name=accessTokenExpireTime,proto3" json:"accessTokenExpireTime,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
 
 func (x *RefreshAccessTokenResponse) Reset() {
 	*x = RefreshAccessTokenResponse{}
-	mi := &file_model_http_proto_msgTypes[1]
+	mi := &file_http_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -88,7 +200,7 @@ func (x *RefreshAccessTokenResponse) String() string {
 func (*RefreshAccessTokenResponse) ProtoMessage() {}
 
 func (x *RefreshAccessTokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[1]
+	mi := &file_http_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -101,7 +213,7 @@ func (x *RefreshAccessTokenResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RefreshAccessTokenResponse.ProtoReflect.Descriptor instead.
 func (*RefreshAccessTokenResponse) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{1}
+	return file_http_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *RefreshAccessTokenResponse) GetAccessToken() string {
@@ -128,7 +240,7 @@ type Timestamp struct {
 
 func (x *Timestamp) Reset() {
 	*x = Timestamp{}
-	mi := &file_model_http_proto_msgTypes[2]
+	mi := &file_http_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -140,7 +252,7 @@ func (x *Timestamp) String() string {
 func (*Timestamp) ProtoMessage() {}
 
 func (x *Timestamp) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[2]
+	mi := &file_http_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -153,7 +265,7 @@ func (x *Timestamp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Timestamp.ProtoReflect.Descriptor instead.
 func (*Timestamp) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{2}
+	return file_http_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Timestamp) GetSeconds() int64 {
@@ -179,7 +291,7 @@ type ListChatRoomsRequest struct {
 
 func (x *ListChatRoomsRequest) Reset() {
 	*x = ListChatRoomsRequest{}
-	mi := &file_model_http_proto_msgTypes[3]
+	mi := &file_http_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -191,7 +303,7 @@ func (x *ListChatRoomsRequest) String() string {
 func (*ListChatRoomsRequest) ProtoMessage() {}
 
 func (x *ListChatRoomsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[3]
+	mi := &file_http_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -204,7 +316,7 @@ func (x *ListChatRoomsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListChatRoomsRequest.ProtoReflect.Descriptor instead.
 func (*ListChatRoomsRequest) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{3}
+	return file_http_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListChatRoomsRequest) GetMaxPageSize() int64 {
@@ -225,7 +337,7 @@ type ChatRoom struct {
 
 func (x *ChatRoom) Reset() {
 	*x = ChatRoom{}
-	mi := &file_model_http_proto_msgTypes[4]
+	mi := &file_http_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -237,7 +349,7 @@ func (x *ChatRoom) String() string {
 func (*ChatRoom) ProtoMessage() {}
 
 func (x *ChatRoom) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[4]
+	mi := &file_http_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -250,7 +362,7 @@ func (x *ChatRoom) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChatRoom.ProtoReflect.Descriptor instead.
 func (*ChatRoom) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{4}
+	return file_http_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ChatRoom) GetUserId() string {
@@ -283,7 +395,7 @@ type ListChatRoomsResponse struct {
 
 func (x *ListChatRoomsResponse) Reset() {
 	*x = ListChatRoomsResponse{}
-	mi := &file_model_http_proto_msgTypes[5]
+	mi := &file_http_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -295,7 +407,7 @@ func (x *ListChatRoomsResponse) String() string {
 func (*ListChatRoomsResponse) ProtoMessage() {}
 
 func (x *ListChatRoomsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[5]
+	mi := &file_http_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -308,7 +420,7 @@ func (x *ListChatRoomsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListChatRoomsResponse.ProtoReflect.Descriptor instead.
 func (*ListChatRoomsResponse) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{5}
+	return file_http_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ListChatRoomsResponse) GetChatRooms() []*ChatRoom {
@@ -331,7 +443,7 @@ type ListChatMessagesRequest struct {
 
 func (x *ListChatMessagesRequest) Reset() {
 	*x = ListChatMessagesRequest{}
-	mi := &file_model_http_proto_msgTypes[6]
+	mi := &file_http_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -343,7 +455,7 @@ func (x *ListChatMessagesRequest) String() string {
 func (*ListChatMessagesRequest) ProtoMessage() {}
 
 func (x *ListChatMessagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[6]
+	mi := &file_http_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -356,7 +468,7 @@ func (x *ListChatMessagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListChatMessagesRequest.ProtoReflect.Descriptor instead.
 func (*ListChatMessagesRequest) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{6}
+	return file_http_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ListChatMessagesRequest) GetUserId() string {
@@ -398,21 +510,21 @@ type ListChatMessages struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	ChatRoomId    string                 `protobuf:"bytes,2,opt,name=chat_room_id,json=chatRoomId,proto3" json:"chat_room_id,omitempty"`
-	ChatMessageId string       `protobuf:"bytes,3,opt,name=chat_message_id,json=chatMessageId,proto3" json:"chat_message_id,omitempty"`
-	UserProfile   *UserProfile `protobuf:"bytes,4,opt,name=user_profile,json=userProfile,proto3" json:"user_profile,omitempty"`
-	Type          int32        `protobuf:"varint,5,opt,name=type,proto3" json:"type,omitempty"`
+	ChatMessageId string                 `protobuf:"bytes,3,opt,name=chat_message_id,json=chatMessageId,proto3" json:"chat_message_id,omitempty"`
+	UserProfile   *UserProfile           `protobuf:"bytes,4,opt,name=user_profile,json=userProfile,proto3" json:"user_profile,omitempty"`
+	Type          int32                  `protobuf:"varint,5,opt,name=type,proto3" json:"type,omitempty"`
 	Content       string                 `protobuf:"bytes,6,opt,name=content,proto3" json:"content,omitempty"`
 	ImageUrl      string                 `protobuf:"bytes,7,opt,name=image_url,json=imageUrl,proto3" json:"image_url,omitempty"`
-	VideoUrl      string       `protobuf:"bytes,8,opt,name=video_url,json=videoUrl,proto3" json:"video_url,omitempty"`
-	Timestamp     *Timestamp   `protobuf:"bytes,100,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
-	TimeStr       string       `protobuf:"bytes,200,opt,name=time_str,json=timeStr,proto3" json:"time_str,omitempty"`
+	VideoUrl      string                 `protobuf:"bytes,8,opt,name=video_url,json=videoUrl,proto3" json:"video_url,omitempty"`
+	Timestamp     *Timestamp             `protobuf:"bytes,100,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	TimeStr       string                 `protobuf:"bytes,200,opt,name=time_str,json=timeStr,proto3" json:"time_str,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListChatMessages) Reset() {
 	*x = ListChatMessages{}
-	mi := &file_model_http_proto_msgTypes[7]
+	mi := &file_http_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -424,7 +536,7 @@ func (x *ListChatMessages) String() string {
 func (*ListChatMessages) ProtoMessage() {}
 
 func (x *ListChatMessages) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[7]
+	mi := &file_http_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -437,7 +549,7 @@ func (x *ListChatMessages) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListChatMessages.ProtoReflect.Descriptor instead.
 func (*ListChatMessages) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{7}
+	return file_http_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ListChatMessages) GetUserId() string {
@@ -522,7 +634,7 @@ type UserProfile struct {
 
 func (x *UserProfile) Reset() {
 	*x = UserProfile{}
-	mi := &file_model_http_proto_msgTypes[8]
+	mi := &file_http_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -534,7 +646,7 @@ func (x *UserProfile) String() string {
 func (*UserProfile) ProtoMessage() {}
 
 func (x *UserProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[8]
+	mi := &file_http_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -547,7 +659,7 @@ func (x *UserProfile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserProfile.ProtoReflect.Descriptor instead.
 func (*UserProfile) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{8}
+	return file_http_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *UserProfile) GetUserId() string {
@@ -588,7 +700,7 @@ type ListChatMessagesResponse struct {
 
 func (x *ListChatMessagesResponse) Reset() {
 	*x = ListChatMessagesResponse{}
-	mi := &file_model_http_proto_msgTypes[9]
+	mi := &file_http_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -600,7 +712,7 @@ func (x *ListChatMessagesResponse) String() string {
 func (*ListChatMessagesResponse) ProtoMessage() {}
 
 func (x *ListChatMessagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[9]
+	mi := &file_http_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -613,7 +725,7 @@ func (x *ListChatMessagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListChatMessagesResponse.ProtoReflect.Descriptor instead.
 func (*ListChatMessagesResponse) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{9}
+	return file_http_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ListChatMessagesResponse) GetMessages() []*ListChatMessages {
@@ -640,7 +752,7 @@ type GetChatRoomRequest struct {
 
 func (x *GetChatRoomRequest) Reset() {
 	*x = GetChatRoomRequest{}
-	mi := &file_model_http_proto_msgTypes[10]
+	mi := &file_http_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -652,7 +764,7 @@ func (x *GetChatRoomRequest) String() string {
 func (*GetChatRoomRequest) ProtoMessage() {}
 
 func (x *GetChatRoomRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[10]
+	mi := &file_http_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -665,7 +777,7 @@ func (x *GetChatRoomRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetChatRoomRequest.ProtoReflect.Descriptor instead.
 func (*GetChatRoomRequest) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{10}
+	return file_http_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *GetChatRoomRequest) GetUserId() string {
@@ -690,7 +802,7 @@ type CheckStreamLiveRequest struct {
 
 func (x *CheckStreamLiveRequest) Reset() {
 	*x = CheckStreamLiveRequest{}
-	mi := &file_model_http_proto_msgTypes[11]
+	mi := &file_http_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -702,7 +814,7 @@ func (x *CheckStreamLiveRequest) String() string {
 func (*CheckStreamLiveRequest) ProtoMessage() {}
 
 func (x *CheckStreamLiveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[11]
+	mi := &file_http_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -715,22 +827,22 @@ func (x *CheckStreamLiveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckStreamLiveRequest.ProtoReflect.Descriptor instead.
 func (*CheckStreamLiveRequest) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{11}
+	return file_http_proto_rawDescGZIP(), []int{11}
 }
 
 type CheckStreamLiveResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Field1        int32                  `protobuf:"varint,1,opt,name=field1,proto3" json:"field1,omitempty"`
-	Field2        int32         `protobuf:"varint,2,opt,name=field2,proto3" json:"field2,omitempty"`
-	LiveInfo      []*LiveStream `protobuf:"bytes,3,rep,name=live_info,json=liveInfo,proto3" json:"live_info,omitempty"`
-	UserProfile   []*LiveUser   `protobuf:"bytes,4,rep,name=user_profile,json=userProfile,proto3" json:"user_profile,omitempty"`
+	Field2        int32                  `protobuf:"varint,2,opt,name=field2,proto3" json:"field2,omitempty"`
+	LiveInfo      []*LiveStream          `protobuf:"bytes,3,rep,name=live_info,json=liveInfo,proto3" json:"live_info,omitempty"`
+	UserProfile   []*LiveUser            `protobuf:"bytes,4,rep,name=user_profile,json=userProfile,proto3" json:"user_profile,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CheckStreamLiveResponse) Reset() {
 	*x = CheckStreamLiveResponse{}
-	mi := &file_model_http_proto_msgTypes[12]
+	mi := &file_http_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -742,7 +854,7 @@ func (x *CheckStreamLiveResponse) String() string {
 func (*CheckStreamLiveResponse) ProtoMessage() {}
 
 func (x *CheckStreamLiveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[12]
+	mi := &file_http_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -755,7 +867,7 @@ func (x *CheckStreamLiveResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckStreamLiveResponse.ProtoReflect.Descriptor instead.
 func (*CheckStreamLiveResponse) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{12}
+	return file_http_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CheckStreamLiveResponse) GetField1() int32 {
@@ -799,7 +911,7 @@ type LiveStream struct {
 
 func (x *LiveStream) Reset() {
 	*x = LiveStream{}
-	mi := &file_model_http_proto_msgTypes[13]
+	mi := &file_http_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -811,7 +923,7 @@ func (x *LiveStream) String() string {
 func (*LiveStream) ProtoMessage() {}
 
 func (x *LiveStream) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[13]
+	mi := &file_http_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -824,7 +936,7 @@ func (x *LiveStream) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LiveStream.ProtoReflect.Descriptor instead.
 func (*LiveStream) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{13}
+	return file_http_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *LiveStream) GetLiveId() string {
@@ -864,15 +976,15 @@ func (x *LiveStream) GetWebrtcUrl() string {
 
 type LiveUser struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string       `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Info          *UserProfile `protobuf:"bytes,2,opt,name=info,proto3" json:"info,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Info          *UserProfile           `protobuf:"bytes,2,opt,name=info,proto3" json:"info,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *LiveUser) Reset() {
 	*x = LiveUser{}
-	mi := &file_model_http_proto_msgTypes[14]
+	mi := &file_http_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -884,7 +996,7 @@ func (x *LiveUser) String() string {
 func (*LiveUser) ProtoMessage() {}
 
 func (x *LiveUser) ProtoReflect() protoreflect.Message {
-	mi := &file_model_http_proto_msgTypes[14]
+	mi := &file_http_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -897,7 +1009,7 @@ func (x *LiveUser) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LiveUser.ProtoReflect.Descriptor instead.
 func (*LiveUser) Descriptor() ([]byte, []int) {
-	return file_model_http_proto_rawDescGZIP(), []int{14}
+	return file_http_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *LiveUser) GetId() string {
@@ -914,11 +1026,384 @@ func (x *LiveUser) GetInfo() *UserProfile {
 	return nil
 }
 
-var File_model_http_proto protoreflect.FileDescriptor
+type GetSNSLoginURLRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IdProvider    IdProvider             `protobuf:"varint,1,opt,name=id_provider,json=idProvider,proto3,enum=model.IdProvider" json:"id_provider,omitempty"`
+	State         string                 `protobuf:"bytes,2,opt,name=state,proto3" json:"state,omitempty"`
+	CodeChallenge string                 `protobuf:"bytes,3,opt,name=code_challenge,json=codeChallenge,proto3" json:"code_challenge,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
 
-const file_model_http_proto_rawDesc = "" +
+func (x *GetSNSLoginURLRequest) Reset() {
+	*x = GetSNSLoginURLRequest{}
+	mi := &file_http_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSNSLoginURLRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSNSLoginURLRequest) ProtoMessage() {}
+
+func (x *GetSNSLoginURLRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_http_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSNSLoginURLRequest.ProtoReflect.Descriptor instead.
+func (*GetSNSLoginURLRequest) Descriptor() ([]byte, []int) {
+	return file_http_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *GetSNSLoginURLRequest) GetIdProvider() IdProvider {
+	if x != nil {
+		return x.IdProvider
+	}
+	return IdProvider_ID_PROVIDER_UNSPECIFIED
+}
+
+func (x *GetSNSLoginURLRequest) GetState() string {
+	if x != nil {
+		return x.State
+	}
+	return ""
+}
+
+func (x *GetSNSLoginURLRequest) GetCodeChallenge() string {
+	if x != nil {
+		return x.CodeChallenge
+	}
+	return ""
+}
+
+type GetSNSLoginURLResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	LoginUrl      string                 `protobuf:"bytes,1,opt,name=login_url,json=loginUrl,proto3" json:"login_url,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSNSLoginURLResponse) Reset() {
+	*x = GetSNSLoginURLResponse{}
+	mi := &file_http_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSNSLoginURLResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSNSLoginURLResponse) ProtoMessage() {}
+
+func (x *GetSNSLoginURLResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_http_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSNSLoginURLResponse.ProtoReflect.Descriptor instead.
+func (*GetSNSLoginURLResponse) Descriptor() ([]byte, []int) {
+	return file_http_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *GetSNSLoginURLResponse) GetLoginUrl() string {
+	if x != nil {
+		return x.LoginUrl
+	}
+	return ""
+}
+
+type UserAuthBySNSRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IdProvider    IdProvider             `protobuf:"varint,1,opt,name=id_provider,json=idProvider,proto3,enum=model.IdProvider" json:"id_provider,omitempty"`
+	OauthToken    string                 `protobuf:"bytes,2,opt,name=oauth_token,json=oauthToken,proto3" json:"oauth_token,omitempty"`
+	OauthVerifier string                 `protobuf:"bytes,3,opt,name=oauth_verifier,json=oauthVerifier,proto3" json:"oauth_verifier,omitempty"`
+	CodeVerifier  string                 `protobuf:"bytes,4,opt,name=code_verifier,json=codeVerifier,proto3" json:"code_verifier,omitempty"`
+	IdToken       string                 `protobuf:"bytes,5,opt,name=id_token,json=idToken,proto3" json:"id_token,omitempty"`
+	RawNonce      string                 `protobuf:"bytes,6,opt,name=raw_nonce,json=rawNonce,proto3" json:"raw_nonce,omitempty"`
+	AccessToken   string                 `protobuf:"bytes,7,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserAuthBySNSRequest) Reset() {
+	*x = UserAuthBySNSRequest{}
+	mi := &file_http_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserAuthBySNSRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserAuthBySNSRequest) ProtoMessage() {}
+
+func (x *UserAuthBySNSRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_http_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserAuthBySNSRequest.ProtoReflect.Descriptor instead.
+func (*UserAuthBySNSRequest) Descriptor() ([]byte, []int) {
+	return file_http_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *UserAuthBySNSRequest) GetIdProvider() IdProvider {
+	if x != nil {
+		return x.IdProvider
+	}
+	return IdProvider_ID_PROVIDER_UNSPECIFIED
+}
+
+func (x *UserAuthBySNSRequest) GetOauthToken() string {
+	if x != nil {
+		return x.OauthToken
+	}
+	return ""
+}
+
+func (x *UserAuthBySNSRequest) GetOauthVerifier() string {
+	if x != nil {
+		return x.OauthVerifier
+	}
+	return ""
+}
+
+func (x *UserAuthBySNSRequest) GetCodeVerifier() string {
+	if x != nil {
+		return x.CodeVerifier
+	}
+	return ""
+}
+
+func (x *UserAuthBySNSRequest) GetIdToken() string {
+	if x != nil {
+		return x.IdToken
+	}
+	return ""
+}
+
+func (x *UserAuthBySNSRequest) GetRawNonce() string {
+	if x != nil {
+		return x.RawNonce
+	}
+	return ""
+}
+
+func (x *UserAuthBySNSRequest) GetAccessToken() string {
+	if x != nil {
+		return x.AccessToken
+	}
+	return ""
+}
+
+type UserPrivate struct {
+	state                     protoimpl.MessageState `protogen:"open.v1"`
+	UserId                    string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UniqueId                  string                 `protobuf:"bytes,2,opt,name=unique_id,json=uniqueId,proto3" json:"unique_id,omitempty"`
+	DisplayName               string                 `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	ProfileImageUrl           string                 `protobuf:"bytes,4,opt,name=profile_image_url,json=profileImageUrl,proto3" json:"profile_image_url,omitempty"`
+	ProfileBackgroundImageUrl string                 `protobuf:"bytes,40,opt,name=profile_background_image_url,json=profileBackgroundImageUrl,proto3" json:"profile_background_image_url,omitempty"`
+	SmProfileImageUrl         string                 `protobuf:"bytes,44,opt,name=sm_profile_image_url,json=smProfileImageUrl,proto3" json:"sm_profile_image_url,omitempty"`
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
+}
+
+func (x *UserPrivate) Reset() {
+	*x = UserPrivate{}
+	mi := &file_http_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPrivate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPrivate) ProtoMessage() {}
+
+func (x *UserPrivate) ProtoReflect() protoreflect.Message {
+	mi := &file_http_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPrivate.ProtoReflect.Descriptor instead.
+func (*UserPrivate) Descriptor() ([]byte, []int) {
+	return file_http_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *UserPrivate) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *UserPrivate) GetUniqueId() string {
+	if x != nil {
+		return x.UniqueId
+	}
+	return ""
+}
+
+func (x *UserPrivate) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+func (x *UserPrivate) GetProfileImageUrl() string {
+	if x != nil {
+		return x.ProfileImageUrl
+	}
+	return ""
+}
+
+func (x *UserPrivate) GetProfileBackgroundImageUrl() string {
+	if x != nil {
+		return x.ProfileBackgroundImageUrl
+	}
+	return ""
+}
+
+func (x *UserPrivate) GetSmProfileImageUrl() string {
+	if x != nil {
+		return x.SmProfileImageUrl
+	}
+	return ""
+}
+
+type UserAuthBySNSResponse struct {
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	NeedSignup            bool                   `protobuf:"varint,1,opt,name=need_signup,json=needSignup,proto3" json:"need_signup,omitempty"`
+	SignupToken           string                 `protobuf:"bytes,2,opt,name=signup_token,json=signupToken,proto3" json:"signup_token,omitempty"`
+	User                  *UserPrivate           `protobuf:"bytes,3,opt,name=user,proto3" json:"user,omitempty"`
+	AccessToken           string                 `protobuf:"bytes,4,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
+	RefreshToken          string                 `protobuf:"bytes,5,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	AccessTokenExpireTime *Timestamp             `protobuf:"bytes,6,opt,name=access_token_expire_time,json=accessTokenExpireTime,proto3" json:"access_token_expire_time,omitempty"`
+	IsUnretirable         bool                   `protobuf:"varint,7,opt,name=is_unretirable,json=isUnretirable,proto3" json:"is_unretirable,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
+}
+
+func (x *UserAuthBySNSResponse) Reset() {
+	*x = UserAuthBySNSResponse{}
+	mi := &file_http_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserAuthBySNSResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserAuthBySNSResponse) ProtoMessage() {}
+
+func (x *UserAuthBySNSResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_http_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserAuthBySNSResponse.ProtoReflect.Descriptor instead.
+func (*UserAuthBySNSResponse) Descriptor() ([]byte, []int) {
+	return file_http_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *UserAuthBySNSResponse) GetNeedSignup() bool {
+	if x != nil {
+		return x.NeedSignup
+	}
+	return false
+}
+
+func (x *UserAuthBySNSResponse) GetSignupToken() string {
+	if x != nil {
+		return x.SignupToken
+	}
+	return ""
+}
+
+func (x *UserAuthBySNSResponse) GetUser() *UserPrivate {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+func (x *UserAuthBySNSResponse) GetAccessToken() string {
+	if x != nil {
+		return x.AccessToken
+	}
+	return ""
+}
+
+func (x *UserAuthBySNSResponse) GetRefreshToken() string {
+	if x != nil {
+		return x.RefreshToken
+	}
+	return ""
+}
+
+func (x *UserAuthBySNSResponse) GetAccessTokenExpireTime() *Timestamp {
+	if x != nil {
+		return x.AccessTokenExpireTime
+	}
+	return nil
+}
+
+func (x *UserAuthBySNSResponse) GetIsUnretirable() bool {
+	if x != nil {
+		return x.IsUnretirable
+	}
+	return false
+}
+
+var File_http_proto protoreflect.FileDescriptor
+
+const file_http_proto_rawDesc = "" +
 	"\n" +
-	"\x10model/http.proto\x12\x05model\"@\n" +
+	"\n" +
+	"http.proto\x12\x05model\"@\n" +
 	"\x19RefreshAccessTokenRequest\x12#\n" +
 	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"\x86\x01\n" +
 	"\x1aRefreshAccessTokenResponse\x12 \n" +
@@ -985,75 +1470,135 @@ const file_model_http_proto_rawDesc = "" +
 	"webrtc_url\x18\r \x01(\tR\twebrtcUrl\"B\n" +
 	"\bLiveUser\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12&\n" +
-	"\x04info\x18\x02 \x01(\v2\x12.model.UserProfileR\x04infoB\tZ\a./modelb\x06proto3"
+	"\x04info\x18\x02 \x01(\v2\x12.model.UserProfileR\x04info\"\x88\x01\n" +
+	"\x15GetSNSLoginURLRequest\x122\n" +
+	"\vid_provider\x18\x01 \x01(\x0e2\x11.model.IdProviderR\n" +
+	"idProvider\x12\x14\n" +
+	"\x05state\x18\x02 \x01(\tR\x05state\x12%\n" +
+	"\x0ecode_challenge\x18\x03 \x01(\tR\rcodeChallenge\"5\n" +
+	"\x16GetSNSLoginURLResponse\x12\x1b\n" +
+	"\tlogin_url\x18\x01 \x01(\tR\bloginUrl\"\x92\x02\n" +
+	"\x14UserAuthBySNSRequest\x122\n" +
+	"\vid_provider\x18\x01 \x01(\x0e2\x11.model.IdProviderR\n" +
+	"idProvider\x12\x1f\n" +
+	"\voauth_token\x18\x02 \x01(\tR\n" +
+	"oauthToken\x12%\n" +
+	"\x0eoauth_verifier\x18\x03 \x01(\tR\roauthVerifier\x12#\n" +
+	"\rcode_verifier\x18\x04 \x01(\tR\fcodeVerifier\x12\x19\n" +
+	"\bid_token\x18\x05 \x01(\tR\aidToken\x12\x1b\n" +
+	"\traw_nonce\x18\x06 \x01(\tR\brawNonce\x12!\n" +
+	"\faccess_token\x18\a \x01(\tR\vaccessToken\"\x9c\x02\n" +
+	"\vUserPrivate\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1b\n" +
+	"\tunique_id\x18\x02 \x01(\tR\buniqueId\x12!\n" +
+	"\fdisplay_name\x18\x03 \x01(\tR\vdisplayName\x12*\n" +
+	"\x11profile_image_url\x18\x04 \x01(\tR\x0fprofileImageUrl\x12?\n" +
+	"\x1cprofile_background_image_url\x18( \x01(\tR\x19profileBackgroundImageUrl\x12/\n" +
+	"\x14sm_profile_image_url\x18, \x01(\tR\x11smProfileImageUrlJ\x04\b\x05\x10\x16J\x04\b\x1f\x10(J\x04\b)\x10,J\x04\b-\x107\"\xbd\x02\n" +
+	"\x15UserAuthBySNSResponse\x12\x1f\n" +
+	"\vneed_signup\x18\x01 \x01(\bR\n" +
+	"needSignup\x12!\n" +
+	"\fsignup_token\x18\x02 \x01(\tR\vsignupToken\x12&\n" +
+	"\x04user\x18\x03 \x01(\v2\x12.model.UserPrivateR\x04user\x12!\n" +
+	"\faccess_token\x18\x04 \x01(\tR\vaccessToken\x12#\n" +
+	"\rrefresh_token\x18\x05 \x01(\tR\frefreshToken\x12I\n" +
+	"\x18access_token_expire_time\x18\x06 \x01(\v2\x10.model.TimestampR\x15accessTokenExpireTime\x12%\n" +
+	"\x0eis_unretirable\x18\a \x01(\bR\risUnretirable*>\n" +
+	"\x0fChatMessageType\x12\v\n" +
+	"\aUnknown\x10\x00\x12\b\n" +
+	"\x04Text\x10\x01\x12\t\n" +
+	"\x05Image\x10\x02\x12\t\n" +
+	"\x05Video\x10\x03*\xbf\x01\n" +
+	"\n" +
+	"IdProvider\x12\x1b\n" +
+	"\x17ID_PROVIDER_UNSPECIFIED\x10\x00\x12\x1c\n" +
+	"\x18ID_PROVIDER_PHONE_NUMBER\x10\x01\x12\x15\n" +
+	"\x11ID_PROVIDER_APPLE\x10\x02\x12\x14\n" +
+	"\x10ID_PROVIDER_LINE\x10\x03\x12\x17\n" +
+	"\x13ID_PROVIDER_TWITTER\x10\x04\x12\x16\n" +
+	"\x12ID_PROVIDER_GOOGLE\x10\x05\x12\x18\n" +
+	"\x14ID_PROVIDER_FACEBOOK\x10\x06B\tZ\a./modelb\x06proto3"
 
 var (
-	file_model_http_proto_rawDescOnce sync.Once
-	file_model_http_proto_rawDescData []byte
+	file_http_proto_rawDescOnce sync.Once
+	file_http_proto_rawDescData []byte
 )
 
-func file_model_http_proto_rawDescGZIP() []byte {
-	file_model_http_proto_rawDescOnce.Do(func() {
-		file_model_http_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_model_http_proto_rawDesc), len(file_model_http_proto_rawDesc)))
+func file_http_proto_rawDescGZIP() []byte {
+	file_http_proto_rawDescOnce.Do(func() {
+		file_http_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_http_proto_rawDesc), len(file_http_proto_rawDesc)))
 	})
-	return file_model_http_proto_rawDescData
+	return file_http_proto_rawDescData
 }
 
-var file_model_http_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
-var file_model_http_proto_goTypes = []any{
-	(*RefreshAccessTokenRequest)(nil),  // 0: model.RefreshAccessTokenRequest
-	(*RefreshAccessTokenResponse)(nil), // 1: model.RefreshAccessTokenResponse
-	(*Timestamp)(nil),                  // 2: model.Timestamp
-	(*ListChatRoomsRequest)(nil),       // 3: model.ListChatRoomsRequest
-	(*ChatRoom)(nil),                   // 4: model.ChatRoom
-	(*ListChatRoomsResponse)(nil),      // 5: model.ListChatRoomsResponse
-	(*ListChatMessagesRequest)(nil),    // 6: model.ListChatMessagesRequest
-	(*ListChatMessages)(nil),           // 7: model.ListChatMessages
-	(*UserProfile)(nil),                // 8: model.UserProfile
-	(*ListChatMessagesResponse)(nil),   // 9: model.ListChatMessagesResponse
-	(*GetChatRoomRequest)(nil),         // 10: model.GetChatRoomRequest
-	(*CheckStreamLiveRequest)(nil),     // 11: model.CheckStreamLiveRequest
-	(*CheckStreamLiveResponse)(nil),    // 12: model.CheckStreamLiveResponse
-	(*LiveStream)(nil),                 // 13: model.LiveStream
-	(*LiveUser)(nil),                   // 14: model.LiveUser
+var file_http_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_http_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
+var file_http_proto_goTypes = []any{
+	(ChatMessageType)(0),               // 0: model.ChatMessageType
+	(IdProvider)(0),                    // 1: model.IdProvider
+	(*RefreshAccessTokenRequest)(nil),  // 2: model.RefreshAccessTokenRequest
+	(*RefreshAccessTokenResponse)(nil), // 3: model.RefreshAccessTokenResponse
+	(*Timestamp)(nil),                  // 4: model.Timestamp
+	(*ListChatRoomsRequest)(nil),       // 5: model.ListChatRoomsRequest
+	(*ChatRoom)(nil),                   // 6: model.ChatRoom
+	(*ListChatRoomsResponse)(nil),      // 7: model.ListChatRoomsResponse
+	(*ListChatMessagesRequest)(nil),    // 8: model.ListChatMessagesRequest
+	(*ListChatMessages)(nil),           // 9: model.ListChatMessages
+	(*UserProfile)(nil),                // 10: model.UserProfile
+	(*ListChatMessagesResponse)(nil),   // 11: model.ListChatMessagesResponse
+	(*GetChatRoomRequest)(nil),         // 12: model.GetChatRoomRequest
+	(*CheckStreamLiveRequest)(nil),     // 13: model.CheckStreamLiveRequest
+	(*CheckStreamLiveResponse)(nil),    // 14: model.CheckStreamLiveResponse
+	(*LiveStream)(nil),                 // 15: model.LiveStream
+	(*LiveUser)(nil),                   // 16: model.LiveUser
+	(*GetSNSLoginURLRequest)(nil),      // 17: model.GetSNSLoginURLRequest
+	(*GetSNSLoginURLResponse)(nil),     // 18: model.GetSNSLoginURLResponse
+	(*UserAuthBySNSRequest)(nil),       // 19: model.UserAuthBySNSRequest
+	(*UserPrivate)(nil),                // 20: model.UserPrivate
+	(*UserAuthBySNSResponse)(nil),      // 21: model.UserAuthBySNSResponse
 }
-var file_model_http_proto_depIdxs = []int32{
-	2,  // 0: model.RefreshAccessTokenResponse.accessTokenExpireTime:type_name -> model.Timestamp
-	8,  // 1: model.ChatRoom.user_profile:type_name -> model.UserProfile
-	4,  // 2: model.ListChatRoomsResponse.chat_rooms:type_name -> model.ChatRoom
-	8,  // 3: model.ListChatMessages.user_profile:type_name -> model.UserProfile
-	2,  // 4: model.ListChatMessages.timestamp:type_name -> model.Timestamp
-	7,  // 5: model.ListChatMessagesResponse.messages:type_name -> model.ListChatMessages
-	13, // 6: model.CheckStreamLiveResponse.live_info:type_name -> model.LiveStream
-	14, // 7: model.CheckStreamLiveResponse.user_profile:type_name -> model.LiveUser
-	8,  // 8: model.LiveUser.info:type_name -> model.UserProfile
-	9,  // [9:9] is the sub-list for method output_type
-	9,  // [9:9] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+var file_http_proto_depIdxs = []int32{
+	4,  // 0: model.RefreshAccessTokenResponse.accessTokenExpireTime:type_name -> model.Timestamp
+	10, // 1: model.ChatRoom.user_profile:type_name -> model.UserProfile
+	6,  // 2: model.ListChatRoomsResponse.chat_rooms:type_name -> model.ChatRoom
+	10, // 3: model.ListChatMessages.user_profile:type_name -> model.UserProfile
+	4,  // 4: model.ListChatMessages.timestamp:type_name -> model.Timestamp
+	9,  // 5: model.ListChatMessagesResponse.messages:type_name -> model.ListChatMessages
+	15, // 6: model.CheckStreamLiveResponse.live_info:type_name -> model.LiveStream
+	16, // 7: model.CheckStreamLiveResponse.user_profile:type_name -> model.LiveUser
+	10, // 8: model.LiveUser.info:type_name -> model.UserProfile
+	1,  // 9: model.GetSNSLoginURLRequest.id_provider:type_name -> model.IdProvider
+	1,  // 10: model.UserAuthBySNSRequest.id_provider:type_name -> model.IdProvider
+	20, // 11: model.UserAuthBySNSResponse.user:type_name -> model.UserPrivate
+	4,  // 12: model.UserAuthBySNSResponse.access_token_expire_time:type_name -> model.Timestamp
+	13, // [13:13] is the sub-list for method output_type
+	13, // [13:13] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
-func init() { file_model_http_proto_init() }
-func file_model_http_proto_init() {
-	if File_model_http_proto != nil {
+func init() { file_http_proto_init() }
+func file_http_proto_init() {
+	if File_http_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_model_http_proto_rawDesc), len(file_model_http_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   15,
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_http_proto_rawDesc), len(file_http_proto_rawDesc)),
+			NumEnums:      2,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_model_http_proto_goTypes,
-		DependencyIndexes: file_model_http_proto_depIdxs,
-		MessageInfos:      file_model_http_proto_msgTypes,
+		GoTypes:           file_http_proto_goTypes,
+		DependencyIndexes: file_http_proto_depIdxs,
+		EnumInfos:         file_http_proto_enumTypes,
+		MessageInfos:      file_http_proto_msgTypes,
 	}.Build()
-	File_model_http_proto = out.File
-	file_model_http_proto_goTypes = nil
-	file_model_http_proto_depIdxs = nil
+	File_http_proto = out.File
+	file_http_proto_goTypes = nil
+	file_http_proto_depIdxs = nil
 }

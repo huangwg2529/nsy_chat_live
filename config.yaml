@@ -1,5 +1,15 @@
 proxy:
-  host: "127.0.0.1"
-  port: 7890
-refresh_token: ""
-ffmpeg_path: ""  # C:/ffmpeg/bin/ffmpeg.exe
+    host: 127.0.0.1
+    port: 7890
+login_provider: 
+login_page_url: 
+refresh_token: 
+ffmpeg_path: ""
+media_path_win: ""
+media_path_linux: ~/replive_media
+email:
+    smtp_host: 
+    sender: 
+    auth_code: 
+    receiver: 
+
