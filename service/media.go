@@ -1,8 +1,6 @@
 package service
 
 import (
-	"crypto/sha1"
-	"encoding/hex"
 	"fmt"
 	"net/url"
 	"os"
@@ -49,15 +47,16 @@ func DownloadVideo(mediaUrl string, videoTime time.Time, pathPrefix string, msgI
 }
 
 func DownloadProfileMedia(mediaUrl string, mediaTime time.Time, pathPrefix string, owner string, kind string) (string, error) {
-	name, err := getProfileMediaFileName(mediaUrl, mediaTime, owner, kind)
+	name, err := getProfileMediaFileName(mediaUrl)
 	if err != nil {
 		return "", fmt.Errorf("failed to get profile media file name: %v", err)
 	}
-	path := filepath.Join(pathPrefix, sanitizeFileName(owner), mediaTime.Format("2006"), mediaTime.Format("01"), mediaTime.Format("02"))
+	year, month := getProfileMediaYearMonth(mediaUrl, mediaTime)
+	path := filepath.Join(pathPrefix, sanitizeFileName(owner), year, month)
 	return downloadMedia(mediaUrl, path, name)
 }
 
-func getProfileMediaFileName(mediaUrl string, mediaTime time.Time, owner string, kind string) (string, error) {
+func getProfileMediaFileName(mediaUrl string) (string, error) {
 	u, err := url.Parse(mediaUrl)
 	if err != nil {
 		return "", fmt.Errorf("failed to parse url: %v", err)
@@ -67,20 +66,60 @@ func getProfileMediaFileName(mediaUrl string, mediaTime time.Time, owner string,
 	if base == "" || !strings.Contains(base, ".") {
 		base = "image.jpeg"
 	}
-	ext := filepath.Ext(base)
-	base = strings.TrimSuffix(base, ext)
-	sum := sha1.Sum([]byte(mediaUrl))
-	hash := hex.EncodeToString(sum[:])[:10]
-	name := fmt.Sprintf(
-		"%s_%s_%s_%s_%s%s",
-		mediaTime.Format("2006-01-02"),
-		sanitizeFileName(owner),
-		sanitizeFileName(kind),
-		hash,
-		sanitizeFileName(base),
-		ext,
-	)
-	return name, nil
+	return sanitizeFileName(base), nil
+}
+
+func getProfileMediaYearMonth(mediaUrl string, fallback time.Time) (string, string) {
+	u, err := url.Parse(mediaUrl)
+	if err == nil {
+		parts := strings.FieldsFunc(u.EscapedPath(), func(r rune) bool {
+			return r == '/' || r == '-' || r == '_' || r == '.'
+		})
+		for i := 0; i+1 < len(parts); i++ {
+			year := parts[i]
+			month := parts[i+1]
+			if len(year) == 4 && strings.HasPrefix(year, "20") && len(month) >= 1 && len(month) <= 2 {
+				if monthNum := parseMonth(month); monthNum > 0 {
+					return year, fmt.Sprintf("%02d", monthNum)
+				}
+			}
+		}
+	}
+	return fallback.Format("2006"), fallback.Format("01")
+}
+
+func parseMonth(value string) int {
+	if len(value) == 1 {
+		value = "0" + value
+	}
+	switch value {
+	case "01":
+		return 1
+	case "02":
+		return 2
+	case "03":
+		return 3
+	case "04":
+		return 4
+	case "05":
+		return 5
+	case "06":
+		return 6
+	case "07":
+		return 7
+	case "08":
+		return 8
+	case "09":
+		return 9
+	case "10":
+		return 10
+	case "11":
+		return 11
+	case "12":
+		return 12
+	default:
+		return 0
+	}
 }
 
 func sanitizeFileName(s string) string {

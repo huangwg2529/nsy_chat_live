@@ -64,10 +64,6 @@ func saveChatRooms() error {
 	for _, chatRoom := range innerChatRooms {
 		chatRoomMap[chatRoom.ChatRoomId] = chatRoom
 	}
-	now := time.Now()
-	for _, chatRoom := range chatRooms {
-		syncChatRoomProfileMedia(chatRoom, now)
-	}
 	newRooms := make([]*dal.ChatRoom, 0)
 	currentRooms := make([]*dal.ChatRoom, 0)
 	err = dal.WithWriteDB(func(db *gorm.DB) error {
