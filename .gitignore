@@ -11,3 +11,12 @@ main
 *.jpeg
 *.jpg
 *.png
+
+# replive-web is tracked as part of this repository; keep frontend source
+# assets/configs addable even when root-level generated artifacts are ignored.
+!replive-web/**/*.json
+!replive-web/**/*.jpeg
+!replive-web/**/*.jpg
+!replive-web/**/*.png
+!replive-web/src/components/chat/
+!replive-web/src/components/chat/**
