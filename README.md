@@ -3,6 +3,8 @@
 ## 坏事都是 codex + gpt 做的，跟我没关系哦。
 详细使用说明见飞书：https://my.feishu.cn/wiki/PXe9wkiksifZR9kpVoucsKs1nQe
 
+若飞书文档打不开，请查看仓库内的 [Markdown 使用说明](docs/使用说明.md) 或 [PDF 使用说明](docs/replive存消息、图和视频工具.pdf)。
+
 ## 功能说明
 1. 登录：谷歌账号登录或 x 登录，跳转到网页完成授权。其他的账号体系未支持，可自行抓包获取 refresh token 后写到 config.yaml 使用。
 2. 自动拉取你关注的推的头像和背景图片；拉取并存储你订阅的推的所有消息，保存图片和视频到本地。
