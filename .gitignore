@@ -12,6 +12,9 @@ main
 *.jpg
 *.png
 
+# 使用说明中的截图需要随文档保存。
+!docs/assets/usage/*.png
+
 # replive-web is tracked as part of this repository; keep frontend source
 # assets/configs addable even when root-level generated artifacts are ignored.
 !replive-web/**/*.json
